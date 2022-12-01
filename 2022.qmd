@@ -1,0 +1,86 @@
+---
+title: "Advent of Code 2022"
+format: html
+editor: source
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE, include = TRUE, python.reticulate=FALSE)
+```
+
+```{r results="asis", echo=FALSE}
+css <- paste0(".",
+            tolower(names(knitr::knit_engines$get())),
+            "::before {
+            content: '",
+            toupper(names(knitr::knit_engines$get())),
+            "';
+            display: block;
+            text-align: right;
+            }",
+            collapse="\n")
+cat(paste0("<style>", css, "</style>"))
+```
+
+
+Note: This ain't supposed to be pretty or performant. Just low/no-dependency, first thing to come to mind, code to get to an answer.
+
+https://adventofcode.com/2022/day/1
+
+
+## Day 1
+
+### Question 1
+
+```{r}
+prompt_data <- "/home/chase/Downloads/input.txt"
+input <- readChar(prompt_data, file.info(prompt_data)$size)
+input <- strsplit(input, "\n\n")[[1]]
+cals <- vapply(input, function(x) sum(as.integer(strsplit(x, "\n")[[1]])), 1,USE.NAMES = F)
+cals[which.max(cals)]
+
+```
+
+```{python}
+prompt_data = "/home/chase/Downloads/input.txt"
+
+current_calories = 0
+current_max = 0
+
+with open(prompt_data) as fp:
+    for line in fp:
+        if line == "\n":
+            if current_calories > current_max:
+                current_max = current_calories
+            current_calories = 0
+        else:
+            current_calories += int(line)
+print(current_max)            
+```
+
+### Question 2
+
+
+```{r}
+prompt_data <- "/home/chase/Downloads/input.txt"
+input <- readChar(prompt_data, file.info(prompt_data)$size)
+input <- strsplit(input, "\n\n")[[1]]
+cals <- vapply(input, function(x) sum(as.integer(strsplit(x, "\n")[[1]])), 1,USE.NAMES = F)
+top_three <- sort(cals, decreasing = T)[1:3]
+sum(top_three)
+```
+
+```{python}
+prompt_data = "/home/chase/Downloads/input.txt"
+current_calories = 0
+cal_list = []
+with open(prompt_data) as fp:
+    for line in fp:
+        if line == "\n":
+            cal_list.append(current_calories)
+            current_calories = 0
+        else:
+            current_calories += int(line)
+top_three = sorted(cal_list, reverse=True)[0:3]
+print(sum(top_three))
+```
